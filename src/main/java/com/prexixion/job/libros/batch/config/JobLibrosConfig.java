@@ -23,6 +23,7 @@ public class JobLibrosConfig {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
+    
     @Autowired
     private PersonalReader itemReader;
 
@@ -33,15 +34,16 @@ public class JobLibrosConfig {
     private PersonalWriter itemWriter;
 
     @Bean
-    public Job tuJob() {
-        return jobBuilderFactory.get("tuJob")
-                .start(tuStep())
+    public Job runJob() {
+        return jobBuilderFactory.get("personalFechasNacimientos")
+                .flow(masterStep())
+                .end()
                 .build();
     }
 
     @Bean
-    public Step tuStep() {
-        return stepBuilderFactory.get("tuStep")
+    public Step masterStep() {
+        return stepBuilderFactory.get("masterStep")
                 .<Personal, Personal>chunk(10)
                 .reader(itemReader)
                 .processor(itemProcessor)
